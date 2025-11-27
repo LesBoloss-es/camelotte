@@ -25,11 +25,11 @@ done
 ## All comparisons
 
 printf ';; ============================ [ Comparisons ] ============================= ;;\n\n'
-printf '(rule\n (alias runtest)\n (action\n  (progn'
+printf '(rule (package ppx_monad) (alias runtest) (action (progn\n'
 
 for file in $files; do
     for other_ppx in $other_ppxes; do
-        printf '   (diff %s_%s.expected %s_%s.expected)\n' \
+        printf ' (diff %s_%s.expected %s_%s.expected)\n' \
                "$file" "$ref_ppx" "$file" "$other_ppx"
     done
 done

@@ -7,8 +7,8 @@ let fresh_variable =
     incr next_fresh_var;
     let str = "ppx_monad_var_" ^ (string_of_int !next_fresh_var) in
     let loc = !default_loc in
-    Pat.var { txt = str; loc },
-    Exp.ident { txt = Longident.Lident str; loc }
+    Pat.var {txt = str; loc},
+    Exp.ident {txt = Longident.Lident str; loc}
 
 let rec first = function
   | [] -> None
@@ -21,9 +21,11 @@ let option_map f = function
 
 let (<$>) = option_map
 
-let does_not_support ?(ppx_name="This PPX") feature =
-  Location.raise_errorf "%s does not support %s"
-    ppx_name feature
+let does_not_support ?(ppx_name = "This PPX") feature =
+  Location.raise_errorf
+    "%s does not support %s"
+    ppx_name
+    feature
 
 let unwrap_or_does_not_support ?ppx_name feature = function
   | Some x -> x
@@ -40,7 +42,7 @@ let add_catchall_if_needed ~loc ?mk_return cases =
     let rec is_pat_catchall pat =
       match pat.ppat_desc with
       | Ppat_any | Ppat_var _ -> true
-      | Ppat_alias (pat, _) | Ppat_constraint (pat,_) -> is_pat_catchall pat
+      | Ppat_alias (pat, _) | Ppat_constraint (pat, _) -> is_pat_catchall pat
       | _ -> false
     in
     case.pc_guard = None

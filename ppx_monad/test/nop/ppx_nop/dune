@@ -8,5 +8,6 @@
  (name ppx_nop_monad)
  (modules ppx_nop_monad)
  (libraries ppx_monad)
- (preprocess (pps ppxlib.metaquot))
+ (preprocess
+  (pps ppxlib.metaquot))
  (kind ppx_rewriter))

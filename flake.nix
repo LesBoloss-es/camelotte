@@ -23,6 +23,7 @@
 
       imports = [
         ./monadise/flake-part.nix
+        ./ppx_monad/flake-part.nix
         ./spacedout/flake-part.nix
         ./valet/flake-part.nix
       ];

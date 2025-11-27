@@ -24,6 +24,14 @@
   lwt))
 
 (package
+ (name ppx_monad)
+ (synopsis "A Syntax Extension for all Monadic Syntaxes")
+ (depends
+   ocaml
+   dune-configurator
+   ppxlib))
+
+(package
  (name spacedout)
  (synopsis "Helpers to read and write space-separated data files")
  (depends

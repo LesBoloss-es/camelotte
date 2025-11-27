@@ -8,8 +8,8 @@ let () =
 
 let () =
   let%nop foo = print_endline "foo"; "foo"
-  and     bar = print_endline "bar"; "bar"
-  and     baz = print_endline "baz"; "baz"
+  and bar = print_endline "bar"; "bar"
+  and baz = print_endline "baz"; "baz"
   in
   print_endline foo;
   print_endline bar;

@@ -2,5 +2,6 @@
  (name ppx_monad_ppx_do)
  (public_name ppx_monad.ppx.do)
  (libraries ppx_monad.lib)
- (preprocess (pps ppxlib.metaquot))
+ (preprocess
+  (pps ppxlib.metaquot))
  (kind ppx_rewriter))

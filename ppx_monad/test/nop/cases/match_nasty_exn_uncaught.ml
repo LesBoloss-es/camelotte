@@ -5,4 +5,4 @@ try
   | Some true -> print_endline "true"; failwith "jkljklklj"
   | Some false -> print_endline "false"
 with
-  Failure _ -> print_endline "uncaught failure"
+  | Failure _ -> print_endline "uncaught failure"

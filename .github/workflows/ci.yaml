@@ -36,6 +36,7 @@ jobs:
         run: |
           nix build .#packages.x86_64-linux.monadise -vL --no-link
           nix build .#packages.x86_64-linux.monadise-lwt -vL --no-link
+          nix build .#packages.x86_64-linux.ppx_monad -vL --no-link
           nix build .#packages.x86_64-linux.spacedout -vL --no-link
           nix build .#packages.x86_64-linux.valet -vL --no-link
 
@@ -57,3 +58,35 @@ jobs:
 
       - name: Run pre-commit checks
         run: nix build .#checks.x86_64-linux.git-hooks -vL --no-link
+
+  opam:
+    strategy:
+      fail-fast: false
+      matrix:
+        ocaml-compiler:
+          - 5
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+
+    name: OPAM (OCaml ${{ matrix.ocaml-compiler }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+
+      - name: Install dependencies
+        run: opam install . --deps-only --with-test
+
+      - name: Build
+        run: opam exec -- dune build
+
+      - name: Run tests
+        run: opam exec -- dune test

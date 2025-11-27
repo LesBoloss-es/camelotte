@@ -3,23 +3,31 @@ open Ast_helper
 open Helpers
 
 let mk
-    ?monad ?monad_error
-    ?mk_return ?mk_bind ?mk_fail ?mk_catch
-    ~loc e
+    ?monad
+    ?monad_error
+    ?mk_return
+    ?mk_bind
+    ?mk_fail
+    ?mk_catch
+    ~loc
+    e
   =
-  let mk_return = first_or_does_not_support "assert" [
+  let mk_return =
+    first_or_does_not_support "assert" [
       mk_return;
       Common.mk_fail_of_monad <$> monad_error;
       Common.mk_return_of_monad <$> monad;
     ]
   in
-  let mk_bind = first_or_does_not_support "assert" [
+  let mk_bind =
+    first_or_does_not_support "assert" [
       mk_bind;
       Common.mk_catch_of_monad <$> monad_error;
       Common.mk_bind_of_monad <$> monad;
     ]
   in
-  let mk_fail = first_or_does_not_support "assert" [
+  let mk_fail =
+    first_or_does_not_support "assert" [
       mk_fail;
       Common.mk_fail_of_monad <$> monad;
     ]
@@ -36,7 +44,12 @@ let mk
   match e with
   | [%expr false] -> assert_false
   | e ->
-    mk_bind ~loc e Exp.(function_ [
-        case [%pat? true] (mk_return ~loc [%expr ()]);
-        case [%pat? false] assert_false
-      ])
+    mk_bind
+      ~loc
+      e
+      Exp.(
+        function_ [
+          case [%pat? true] (mk_return ~loc [%expr ()]);
+          case [%pat? false] assert_false
+        ]
+      )

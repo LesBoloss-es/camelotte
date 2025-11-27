@@ -3,17 +3,26 @@ open Ast_helper
 open Helpers
 
 let mk
-    ?monad ?monad_error
-    ?mk_return ?mk_bind ?mk_fail ?mk_catch
-    ~loc rec_flag vbs e
+    ?monad
+    ?monad_error
+    ?mk_return
+    ?mk_bind
+    ?mk_fail
+    ?mk_catch
+    ~loc
+    rec_flag
+    vbs
+    e
   =
-  let mk_return = first [
+  let mk_return =
+    first [
       mk_return;
       Common.mk_fail_of_monad <$> monad_error;
       Common.mk_return_of_monad <$> monad;
     ]
   in
-  let mk_bind = first_or_does_not_support "let" [
+  let mk_bind =
+    first_or_does_not_support "let" [
       mk_bind;
       Common.mk_catch_of_monad <$> monad_error;
       Common.mk_bind_of_monad <$> monad;
@@ -28,10 +37,18 @@ let mk
     let mk_return = unwrap_or_does_not_support "and" mk_return in
     let (pv1, v1) = fresh_variable () in
     let (pv2, v2) = fresh_variable () in
-    mk_bind ~loc e1
+    mk_bind
+      ~loc
+      e1
       [%expr fun [%p pv1] ->
-        [%e mk_bind ~loc e2 [%expr fun [%p pv2] ->
-            [%e mk_return ~loc [%expr ([%e v1], [%e v2])]]]]]
+        [%e mk_bind
+            ~loc
+            e2
+            [%expr fun [%p pv2] ->
+              [%e mk_return ~loc [%expr ([%e v1], [%e v2])]]
+            ]
+        ]
+      ]
   in
   (* let% x1 = e1 and x2 = e2 ... and xn = en in e
      =>

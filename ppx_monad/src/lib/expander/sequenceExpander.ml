@@ -2,12 +2,19 @@ open Ppxlib
 open Helpers
 
 let mk
-    ?monad ?monad_error
-    ?mk_return ?mk_bind ?mk_fail ?mk_catch
-    ~loc e1 e2
+    ?monad
+    ?monad_error
+    ?mk_return
+    ?mk_bind
+    ?mk_fail
+    ?mk_catch
+    ~loc
+    e1
+    e2
   =
   ignore mk_return;
-  let mk_bind = first_or_does_not_support "sequence" [
+  let mk_bind =
+    first_or_does_not_support "sequence" [
       mk_bind;
       Common.mk_catch_of_monad <$> monad_error;
       Common.mk_bind_of_monad <$> monad;

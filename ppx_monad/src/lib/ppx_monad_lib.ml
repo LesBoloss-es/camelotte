@@ -5,12 +5,16 @@ let fresh_variable = fresh_variable
 
 let register
     (* Module containing monadic functions *)
-    ?monad ?monad_error
+    ?monad
+    ?monad_error
     (* Monadic functions *)
-    ?mk_return ?mk_bind
-    ?mk_fail ?mk_catch
+    ?mk_return
+    ?mk_bind
+    ?mk_fail
+    ?mk_catch
     (* Name and where it applies *)
-    ?applies_on name
+    ?applies_on
+    name
   =
   (* parse `monad` and `monad_error` as long idents *)
   let monad = Longident.parse <$> monad in
@@ -18,22 +22,29 @@ let register
   (* compute the expander *)
   let expander =
     Expander.mk
-      ?monad ?monad_error
-      ?mk_return ?mk_bind ?mk_fail ?mk_catch
+      ?monad
+      ?monad_error
+      ?mk_return
+      ?mk_bind
+      ?mk_fail
+      ?mk_catch
       ()
   in
   (* compute the labels to which this extension should apply *)
   let labels =
-    (match applies_on with
-     | Some applies_on -> applies_on
-     | None -> name)
+    (
+      match applies_on with
+      | Some applies_on -> applies_on
+      | None -> name
+    )
     |> (fun r -> "monad.(" ^ r ^ ")")
     |> SimpleRegexp.from_string
     |> SimpleRegexp.unfoldings
   in
   (* for each label, create a rule using the expander *)
   let rule_of_label label =
-    Extension.V3.declare label
+    Extension.V3.declare
+      label
       Extension.Context.expression
       Ast_pattern.(single_expr_payload __)
       expander

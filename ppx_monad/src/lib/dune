@@ -6,5 +6,6 @@
  (name ppx_monad_lib)
  (public_name ppx_monad.lib)
  (libraries ppxlib str)
- (preprocess (pps ppxlib.metaquot))
+ (preprocess
+  (pps ppxlib.metaquot))
  (kind ppx_rewriter))
