@@ -75,7 +75,7 @@
  (synopsis "Helpers to read and write space-separated data files")
  (authors "Niols <niols@niols.fr>")
  (depends
-  (ppx_inline_test (or :build :with-test))))
+  (alcotest :with-test)))
 
 (package
  (name valet)

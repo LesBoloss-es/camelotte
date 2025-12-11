@@ -1,7 +1,4 @@
 (library
  (name SpacedOut)
  (public_name spacedout)
- (libraries str)
- (preprocess
-  (pps ppx_inline_test))
- (inline_tests))
+ (libraries str))

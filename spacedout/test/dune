@@ -1,0 +1,4 @@
+(test
+ (package spacedout)
+ (name run)
+ (libraries spacedout alcotest str))
